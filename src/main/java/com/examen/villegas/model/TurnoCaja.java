@@ -1,74 +1,43 @@
 package com.examen.villegas.model;
 
-import jakarta.persistence.*;
-import java.io.Serializable;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Entity
-@Table(name = "turno_caja")
-public class TurnoCaja implements Serializable {
-
+@Document(collection = "turnos_caja")
+public class TurnoCaja {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_turno")
-    private Integer idTurno;
+    private String id; 
 
-    @Column(name = "codigo_caja", nullable = false, length = 20)
     private String codigoCaja;
-
-    @Column(name = "codigo_cajero", nullable = false, length = 20)
     private String codigoCajero;
-
-    @Column(name = "fecha", nullable = false)
-    private LocalDate fecha;
-
-    @Column(name = "codigo_turno", nullable = false, length = 50, unique = true)
-    private String codigoTurno;
-
-    @Column(name = "inicio_turno", nullable = false)
+    private String estado; 
+    private LocalDateTime fecha;
     private LocalDateTime inicioTurno;
-
-    @Column(name = "monto_inicial", nullable = false, precision = 18, scale = 2)
-    private BigDecimal montoInicial;
-
-    @Column(name = "fin_turno")
     private LocalDateTime finTurno;
-
-    @Column(name = "monto_turno", precision = 18, scale = 2)
+    private BigDecimal montoInicial;
     private BigDecimal montoTurno;
 
-    @Column(name = "estado", nullable = false, length = 10)
-    private String estado;
-
     @Version
-    @Column(name = "version")
     private Long version;
-
-    // Relaciones de hijo a padre (solo referencia, no navegación)
-    // Si se agregan entidades Caja y Cajero, se pueden mapear así:
-    // @ManyToOne
-    // @JoinColumn(name = "codigo_caja", referencedColumnName = "codigo_caja", insertable = false, updatable = false)
-    // private Caja caja;
-    //
-    // @ManyToOne
-    // @JoinColumn(name = "codigo_cajero", referencedColumnName = "codigo_cajero", insertable = false, updatable = false)
-    // private Cajero cajero;
 
     public TurnoCaja() {
     }
 
-    public TurnoCaja(Integer idTurno) {
-        this.idTurno = idTurno;
+    public TurnoCaja(String id) {
+        this.id = id;
     }
 
-    public Integer getIdTurno() {
-        return idTurno;
+    public String getId() {
+        return id;
     }
 
-    public void setIdTurno(Integer idTurno) {
-        this.idTurno = idTurno;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCodigoCaja() {
@@ -87,20 +56,20 @@ public class TurnoCaja implements Serializable {
         this.codigoCajero = codigoCajero;
     }
 
-    public LocalDate getFecha() {
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
-    }
-
-    public String getCodigoTurno() {
-        return codigoTurno;
-    }
-
-    public void setCodigoTurno(String codigoTurno) {
-        this.codigoTurno = codigoTurno;
     }
 
     public LocalDateTime getInicioTurno() {
@@ -111,14 +80,6 @@ public class TurnoCaja implements Serializable {
         this.inicioTurno = inicioTurno;
     }
 
-    public BigDecimal getMontoInicial() {
-        return montoInicial;
-    }
-
-    public void setMontoInicial(BigDecimal montoInicial) {
-        this.montoInicial = montoInicial;
-    }
-
     public LocalDateTime getFinTurno() {
         return finTurno;
     }
@@ -127,20 +88,20 @@ public class TurnoCaja implements Serializable {
         this.finTurno = finTurno;
     }
 
+    public BigDecimal getMontoInicial() {
+        return montoInicial;
+    }
+
+    public void setMontoInicial(BigDecimal montoInicial) {
+        this.montoInicial = montoInicial;
+    }
+
     public BigDecimal getMontoTurno() {
         return montoTurno;
     }
 
     public void setMontoTurno(BigDecimal montoTurno) {
         this.montoTurno = montoTurno;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public Long getVersion() {
@@ -155,28 +116,27 @@ public class TurnoCaja implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TurnoCaja that = (TurnoCaja) o;
-        return idTurno != null && idTurno.equals(that.idTurno);
+        TurnoCaja turnoCaja = (TurnoCaja) o;
+        return Objects.equals(id, turnoCaja.id);
     }
 
     @Override
     public int hashCode() {
-        return idTurno != null ? idTurno.hashCode() : 0;
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "TurnoCaja{" +
-                "idTurno=" + idTurno +
+                "id='" + id + '\'' +
                 ", codigoCaja='" + codigoCaja + '\'' +
                 ", codigoCajero='" + codigoCajero + '\'' +
-                ", fecha=" + fecha +
-                ", codigoTurno='" + codigoTurno + '\'' +
-                ", inicioTurno=" + inicioTurno +
-                ", montoInicial=" + montoInicial +
-                ", finTurno=" + finTurno +
-                ", montoTurno=" + montoTurno +
                 ", estado='" + estado + '\'' +
+                ", fecha=" + fecha +
+                ", inicioTurno=" + inicioTurno +
+                ", finTurno=" + finTurno +
+                ", montoInicial=" + montoInicial +
+                ", montoTurno=" + montoTurno +
                 ", version=" + version +
                 '}';
     }
